@@ -387,12 +387,13 @@
       position:absolute;
       bottom:6px;
       left:6px;
-      background:rgba(0,0,0,0.55);
+      background:rgba(0,0,0,0.65);
       padding:4px 10px;
       border-radius:6px;
       font-size:13px;
-      color:white;
+      color:#ffffff;
       font-weight:500;
+      z-index:2; /* legenda sempre por cima da foto */
     }
 
     @media (max-width:560px){
@@ -400,6 +401,198 @@
       .site-footer-inner{flex-direction:column; text-align:center}
       .saeb-header{flex-direction:column;align-items:flex-start}
     }
+
+    /* ================= RESPONSIVO EXTRA ================= */
+
+    /* Tablets e celulares maiores */
+    @media (max-width: 768px){
+
+      header{
+        height:64px;
+        padding:8px 14px;
+      }
+
+      .brand img{
+        width:46px;
+        height:46px;
+        border-radius:8px;
+      }
+
+      .hero{
+        margin-top:80px;
+        height:42vh;
+        min-height:280px;
+      }
+
+      .hero-card{
+        left:16px;
+        right:16px;
+        bottom:18px;
+        max-width:100%;
+        padding:14px 16px;
+      }
+
+      .hero-title{
+        font-size:20px;
+      }
+
+      .hero-sub{
+        font-size:13px;
+      }
+
+      .baloes-wrap{
+        margin-top:-32px;
+        padding:0 14px;
+      }
+
+      .baloes{
+        padding:16px;
+        gap:14px;
+        grid-template-columns:repeat(2, minmax(0,1fr));
+      }
+
+      .balao{
+        padding:14px 10px;
+      }
+
+      main{
+        padding:14px;
+        margin:12px auto;
+        gap:14px;
+      }
+
+      .card{
+        padding:14px;
+      }
+
+      .history-card p{
+        font-size:13px;
+      }
+
+      .saeb-balao{
+        margin-top:10px;
+      }
+
+      .gallery-grid img,
+      .foto-card img{
+        height:170px;
+      }
+
+      .social-float{
+        right:12px;
+        bottom:12px;
+      }
+
+      .social-float a{
+        width:46px;
+        height:46px;
+        border-radius:12px;
+        font-size:20px;
+      }
+
+      .panel{
+        width:96%;
+        max-height:86vh;
+        padding:14px;
+      }
+    }
+
+    /* Celulares médios/pequenos */
+    @media (max-width: 560px){
+
+      .hero{
+        margin-top:74px;
+        height:40vh;
+        min-height:240px;
+      }
+
+      .hero-card{
+        bottom:14px;
+        padding:12px 14px;
+      }
+
+      .hero-title{
+        font-size:18px;
+      }
+
+      .hero-title span.line{
+        width:56px;
+      }
+
+      .baloes{
+        grid-template-columns:1fr;
+        padding:14px 10px;
+      }
+
+      .balao h3{
+        font-size:16px;
+      }
+
+      .balao p{
+        font-size:12px;
+      }
+
+      .gallery-grid{
+        gap:10px;
+      }
+
+      .gallery-grid img,
+      .foto-card img{
+        height:160px;
+      }
+
+      .site-footer{
+        padding:12px 14px;
+        font-size:12px;
+      }
+
+      .site-footer-inner{
+        gap:8px;
+      }
+
+      .panel{
+        border-radius:10px;
+        padding:12px;
+      }
+
+      .panel h2{
+        font-size:18px;
+      }
+
+      .panel p,
+      .panel li{
+        font-size:13px;
+      }
+    }
+
+    /* Telinhas bem pequenas */
+    @media (max-width: 400px){
+      .hero{
+        height:38vh;
+        min-height:220px;
+      }
+
+      .hero-card{
+        padding:10px 12px;
+      }
+
+      .gallery-grid img,
+      .foto-card img{
+        height:150px;
+      }
+
+      .social-float{
+        right:8px;
+        bottom:8px;
+      }
+
+      .social-float a{
+        width:42px;
+        height:42px;
+        font-size:18px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -560,7 +753,7 @@
 
   <!-- ÍCONES FLUTUANTES -->
   <div class="social-float">
-    <a href="https://www.instagram.com/estephanefts?igsh=MThhOGUyZ3ZsZHRpZg%3D%3D&utm_source=qr" target="_blank" title="Instagram">
+    <a href="https://www.instagram.com/emef.ezequielruizii?igsh=MW9wa3BzeXVhdjcxOQ%3D%3D&utm_source=qr" target="_blank" title="Instagram">
       <i class="fab fa-instagram"></i>
     </a>
     <a href="https://wa.me/5592922-44445" target="_blank" title="WhatsApp">
