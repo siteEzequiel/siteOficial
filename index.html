@@ -341,6 +341,34 @@
       transform:translateY(-6px) scale(1.05);
     }
 
+    /* MENU DO WHATSAPP (UM ÍCONE, DOIS NÚMEROS) */
+    #menuWhats{
+      position:fixed;
+      right:18px;
+      bottom:84px;
+      background:rgba(0,0,0,0.88);
+      padding:10px 12px;
+      border-radius:10px;
+      display:none;
+      z-index:160;
+      min-width:220px;
+    }
+    #menuWhats a{
+      display:block;
+      color:#f9fafb;
+      text-decoration:none;
+      font-size:13px;
+      margin-bottom:6px;
+    }
+    #menuWhats a:last-child{
+      margin-bottom:0;
+    }
+    #menuWhats a span{
+      color:#a5b4fc;
+      font-weight:600;
+      display:block;
+    }
+
     /* FOOTER */
     .site-footer{
       margin-top:24px;
@@ -393,7 +421,7 @@
       font-size:13px;
       color:#ffffff;
       font-weight:500;
-      z-index:2; /* legenda sempre por cima da foto */
+      z-index:2; /* legenda por cima da foto */
     }
 
     @media (max-width:560px){
@@ -401,198 +429,6 @@
       .site-footer-inner{flex-direction:column; text-align:center}
       .saeb-header{flex-direction:column;align-items:flex-start}
     }
-
-    /* ================= RESPONSIVO EXTRA ================= */
-
-    /* Tablets e celulares maiores */
-    @media (max-width: 768px){
-
-      header{
-        height:64px;
-        padding:8px 14px;
-      }
-
-      .brand img{
-        width:46px;
-        height:46px;
-        border-radius:8px;
-      }
-
-      .hero{
-        margin-top:80px;
-        height:42vh;
-        min-height:280px;
-      }
-
-      .hero-card{
-        left:16px;
-        right:16px;
-        bottom:18px;
-        max-width:100%;
-        padding:14px 16px;
-      }
-
-      .hero-title{
-        font-size:20px;
-      }
-
-      .hero-sub{
-        font-size:13px;
-      }
-
-      .baloes-wrap{
-        margin-top:-32px;
-        padding:0 14px;
-      }
-
-      .baloes{
-        padding:16px;
-        gap:14px;
-        grid-template-columns:repeat(2, minmax(0,1fr));
-      }
-
-      .balao{
-        padding:14px 10px;
-      }
-
-      main{
-        padding:14px;
-        margin:12px auto;
-        gap:14px;
-      }
-
-      .card{
-        padding:14px;
-      }
-
-      .history-card p{
-        font-size:13px;
-      }
-
-      .saeb-balao{
-        margin-top:10px;
-      }
-
-      .gallery-grid img,
-      .foto-card img{
-        height:170px;
-      }
-
-      .social-float{
-        right:12px;
-        bottom:12px;
-      }
-
-      .social-float a{
-        width:46px;
-        height:46px;
-        border-radius:12px;
-        font-size:20px;
-      }
-
-      .panel{
-        width:96%;
-        max-height:86vh;
-        padding:14px;
-      }
-    }
-
-    /* Celulares médios/pequenos */
-    @media (max-width: 560px){
-
-      .hero{
-        margin-top:74px;
-        height:40vh;
-        min-height:240px;
-      }
-
-      .hero-card{
-        bottom:14px;
-        padding:12px 14px;
-      }
-
-      .hero-title{
-        font-size:18px;
-      }
-
-      .hero-title span.line{
-        width:56px;
-      }
-
-      .baloes{
-        grid-template-columns:1fr;
-        padding:14px 10px;
-      }
-
-      .balao h3{
-        font-size:16px;
-      }
-
-      .balao p{
-        font-size:12px;
-      }
-
-      .gallery-grid{
-        gap:10px;
-      }
-
-      .gallery-grid img,
-      .foto-card img{
-        height:160px;
-      }
-
-      .site-footer{
-        padding:12px 14px;
-        font-size:12px;
-      }
-
-      .site-footer-inner{
-        gap:8px;
-      }
-
-      .panel{
-        border-radius:10px;
-        padding:12px;
-      }
-
-      .panel h2{
-        font-size:18px;
-      }
-
-      .panel p,
-      .panel li{
-        font-size:13px;
-      }
-    }
-
-    /* Telinhas bem pequenas */
-    @media (max-width: 400px){
-      .hero{
-        height:38vh;
-        min-height:220px;
-      }
-
-      .hero-card{
-        padding:10px 12px;
-      }
-
-      .gallery-grid img,
-      .foto-card img{
-        height:150px;
-      }
-
-      .social-float{
-        right:8px;
-        bottom:8px;
-      }
-
-      .social-float a{
-        width:42px;
-        height:42px;
-        font-size:18px;
-      }
-    }
-
   </style>
 </head>
 <body>
@@ -679,7 +515,7 @@
       <div class="balao" onclick="openPanel('visao')">
         <i class="fa-solid fa-eye"></i>
         <h3>Alunos</h3>
-        <p>Papel Ativo</p>
+        <p>Papel Ativo 2025</p>
       </div>
 
       <!-- Balão Metas -->
@@ -746,21 +582,38 @@
 
       <div>
         Rua Barroso s/n • Horário: 07h às 17h<br>
-        Contato: (92) 9924-4445 • emefezequielruizii@gmail.com
+        Contato: (92) 99224-4445 • (92) 98437-6684 • emefezequielruizii@gmail.com
       </div>
     </div>
   </footer>
 
   <!-- ÍCONES FLUTUANTES -->
   <div class="social-float">
+    <!-- ÚNICO ÍCONE DO WHATSAPP -->
+    <a href="#" onclick="toggleWhatsMenu(event)" title="WhatsApp da escola">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Instagram -->
     <a href="https://www.instagram.com/emef.ezequielruizii?igsh=MW9wa3BzeXVhdjcxOQ%3D%3D&utm_source=qr" target="_blank" title="Instagram">
       <i class="fab fa-instagram"></i>
     </a>
-    <a href="https://wa.me/5592922-44445" target="_blank" title="WhatsApp">
-      <i class="fab fa-whatsapp"></i>
-    </a>
+
+    <!-- Facebook -->
     <a href="https://www.facebook.com/share/1TwQtvS9Ww/?mibextid=wwXIfr" target="_blank" title="Facebook">
       <i class="fab fa-facebook-f"></i>
+    </a>
+  </div>
+
+  <!-- MENU DO WHATSAPP COM 2 CONTATOS -->
+  <div id="menuWhats">
+    <a href="https://wa.me/5592992244445" target="_blank">
+      <span>WhatsApp 1</span>
+      (92) 99224-4445
+    </a>
+    <a href="https://wa.me/5592984376684" target="_blank">
+      <span>WhatsApp 2</span>
+      (92) 98437-6684
     </a>
   </div>
 
@@ -1128,6 +981,8 @@
 
       <!-- ALUNOS -->
       <div id="panel-visao" style="display:none">
+        <h2>TOTAL DE ALUNOS: 397</h2>
+
         <h2>👨‍🎓Alunos do 1º Ano A</h2>
 <p>1. Amarilis Farias de Almeida</p>
 <p>2. Ana Lara Barbosa Trindade</p>
@@ -1519,6 +1374,37 @@
 <p>39. Vítor Hugo Silva da Costa</p>
 <p>40. Wellygton Martins Pinto</p>
 
+       <h2>👨‍🎓Alunos do EJA</h2>
+<p>1. Adaias da Costa Coitinho</p>
+<p>2. Ana Caroline Castro da Silva Guerra</p>
+<p>3. Anderson Tananta de Souza</p>
+<p>4. Ângela Gonsalves da Silva</p>
+<p>5. Antônio dos Santos Conceição</p>
+<p>6. Antonio Rodrigo Pereira Aves</p>
+<p>7. Cleide Costa Vasconcelos</p>
+<p>8. Deuziane Carvalho do Nascimento</p>
+<p>9. Deuzinilda Carvalho do Nascimento</p>
+<p>10. Ellen Castro da Silva Guerra</p>
+<p>11. Erik Alves da Silva</p>
+<p>12. Eudes Serrão Ribeiro</p>
+<p>13. Francilene Medeiros Leitão</p>
+<p>14. Francisco Santos da Conceição</p>
+<p>15. Francisco Santos de Souza</p>
+<p>16. Iris Costa de Araúo</p>
+<p>17. Jayni Tanaka da Silva</p>
+<p>18. Joiciane Queiroz Soares</p>
+<p>19. Kely Silva da Silva</p>
+<p>20. Leila Freita da Costa</p>
+<p>21. Luciano Gustavo de Oliveira</p>
+<p>22. Maria Claudia de Oliveira Maquiné</p>
+<p>23. Raimundo Pinheiro Cordeiro</p>
+<p>24. Rozana Basto Ferreira</p>
+<p>25. Rosilda dos Anjos Santiago</p>
+<p>26. Rozivane da Costa Amorim</p>
+<p>27. Tatiana Oliveira Bentes</p>
+<p>28. Zudenira Barbosa de Oliveira</p>
+
+
       </div>
 
       <!-- METAS DA ESCOLA / LEGISLAÇÕES -->
@@ -1649,6 +1535,23 @@
             color:'#ffffff'
           }
         }
+      }
+    });
+
+    // MENU DO WHATSAPP (UM ÍCONE, DOIS CONTATOS)
+    function toggleWhatsMenu(event){
+      event.preventDefault();
+      const menu = document.getElementById('menuWhats');
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // Fecha o menu do Whats se clicar fora
+    document.addEventListener('click', function(e){
+      const menu = document.getElementById('menuWhats');
+      const isClickOnIcon = e.target.closest('.social-float');
+      const isClickOnMenu = e.target.closest('#menuWhats');
+      if(!isClickOnIcon && !isClickOnMenu){
+        menu.style.display = 'none';
       }
     });
   </script>
