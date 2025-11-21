@@ -1,0 +1,1464 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Portal da Escola EMEF EZEQUIEL RUIZ II — Página Oficial</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Chart.js principal -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Plugin para exibir os valores em cima dos pontos -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+    :root{
+      --bg-dark:#07122a;
+      --bg-light:#f6f9fc;
+      --accent-1:#06b6d4;
+      --accent-2:#2563eb;
+      --muted-dark:#9aa6b2;
+      --muted-light:#64748b;
+      --glass: rgba(255,255,255,0.06);
+    }
+
+    html,body{
+      height:100%;
+      background:linear-gradient(180deg,var(--bg-dark), #04122a);
+      color:rgb(255, 255, 255);
+      -webkit-font-smoothing:antialiased;
+      position:relative;
+    }
+
+    body.light{
+      background:var(--bg-light);
+      color:#0b1220;
+    }
+
+    body.light header{
+      background:rgba(255,255,255,0.92);
+      border-bottom-color:rgba(148,163,184,0.4);
+      color:#0b1220;
+    }
+
+    body.light .card,
+    body.light .balao,
+    body.light .panel,
+    body.light .saeb-balao{
+      background:white;
+      border-color:rgba(148,163,184,0.5);
+      color:#0b1220;
+    }
+
+    body.light .site-footer{
+      background:linear-gradient(180deg,#e5e7eb,#d4d4d8);
+      color:#1f2933;
+      border-top-color:#cbd5e1;
+    }
+
+    body.light .top-fx{
+      background:linear-gradient(
+        to bottom,
+        rgba(37,99,235,0.18) 0%,
+        rgba(37,99,235,0.10) 40%,
+        rgba(37,99,235,0) 100%
+      );
+    }
+
+    /* FUNDO AZUL NEON METADE */
+    .top-fx{
+      position:fixed;
+      top:0; left:0; right:0;
+      height:50vh;
+      pointer-events:none;
+      z-index:0;
+      background:linear-gradient(
+        to bottom,
+        rgba(0,170,255,0.60) 0%,
+        rgba(0,170,255,0.40) 30%,
+        rgba(0,170,255,0.18) 55%,
+        rgba(0,170,255,0) 100%
+      );
+    }
+
+    /* ================= HERO ================= */
+    .hero{
+      margin-top:92px;
+      height:56vh;
+      min-height:360px;
+      border-bottom-left-radius:20px;
+      border-bottom-right-radius:20px;
+      background:url('fotos/criancas.jpeg') center/cover no-repeat;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 30px 60px rgba(0,0,0,0.5);
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:rgba(255,255,255,0.40);
+      z-index:1;
+    }
+
+    .hero *{ position:relative; z-index:2; }
+
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.15));
+      z-index:1;
+    }
+
+    .hero-card{
+      position:absolute; left:36px; bottom:36px; z-index:20;
+      background:var(--glass); backdrop-filter:blur(12px);
+      padding:18px 20px; border-radius:14px;
+      border:1px solid rgba(255,255,255,0.08);
+      max-width:680px;
+      box-shadow:0 18px 40px rgba(15,23,42,0.7);
+    }
+    .hero-title{
+      font-size:26px;font-weight:800;
+      display:flex;flex-direction:column;gap:2px;
+    }
+    .hero-title span.line{
+      width:68px;height:3px;border-radius:999px;
+      margin-top:6px;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+    }
+    .hero-sub{margin-top:8px;color:rgba(255,255,255,0.9)}
+
+    /* HEADER */
+    header{
+      position:fixed; top:0; left:0; right:0; height:72px;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 20px; z-index:90;
+      backdrop-filter:blur(8px);
+      background:linear-gradient(90deg, rgba(255,255,255,0.06), rgba(15,23,42,0.6));
+      border-bottom:1px solid rgba(255,255,255,0.08);
+    }
+    .brand{display:flex; gap:12px; align-items:center}
+    .brand img{width:56px;height:56px;border-radius:10px;object-fit:cover;background:white;padding:4px}
+    .brand h1{font-size:18px;margin:0;font-weight:700}
+    .theme-toggle{
+      cursor:pointer;padding:8px;border-radius:10px;
+      border:1px solid rgba(255,255,255,0.18);
+      background:rgba(15,23,42,0.35);color:inherit
+    }
+
+    /* BALÕES */
+    .baloes-wrap{
+      max-width:1200px; margin:-44px auto 0;
+      padding:0 20px; display:flex; justify-content:center;
+      position:relative; z-index:2;
+    }
+    .baloes{
+      width:100%; display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:22px; padding:24px;
+    }
+    .balao{
+      padding:20px;border-radius:18px;cursor:pointer;
+      background:radial-gradient(circle at top, rgba(56,189,248,0.2), rgba(15,23,42,0.96));
+      border:1px solid rgba(148,163,184,0.4);
+      backdrop-filter:blur(12px);
+      display:flex;flex-direction:column;align-items:center;
+      justify-content:center;text-align:center;gap:8px;
+      transition:transform .22s, box-shadow .22s, border-color .22s;
+    }
+    .balao i{
+      font-size:26px;
+      color:var(--accent-1);
+    }
+    .balao h3{font-size:18px}
+    .balao p{font-size:13px;color:rgba(226,232,240,0.9)}
+    .balao:hover{
+      transform:translateY(-6px) scale(1.02);
+      box-shadow:0 22px 45px rgba(15,23,42,0.8);
+      border-color:var(--accent-1);
+    }
+
+    /* MAIN */
+    main{
+      max-width:1200px; margin:18px auto; padding:20px;
+      position:relative; z-index:3;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(15,23,42,0.9), rgba(15,23,42,0.8));
+      padding:18px;border-radius:14px;
+      border:1px solid rgba(148,163,184,0.4);
+    }
+
+    body.light .card{
+      background:white;
+    }
+
+    /* HISTÓRICO ESCOLAR */
+    .history-card h2{
+      font-size:18px;
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .history-card h2 i{
+      color:var(--accent-1);
+    }
+    .history-card p{
+      font-size:14px;
+      line-height:1.6;
+      color:rgba(226,232,240,0.9);
+      text-align:justify;
+    }
+    body.light .history-card p{
+      color:#1f2933;
+      text-align:justify;
+    }
+
+    /* SAEB em formato de balão */
+    .saeb-section{
+      display:flex;
+      justify-content:center;
+    }
+
+    .saeb-balao{
+      max-width:480px;
+      width:100%;
+      margin-top:6px;
+      padding:18px 18px 16px 18px;
+      border-radius:20px;
+      background:radial-gradient(circle at top, rgba(56,189,248,0.22), rgba(15,23,42,0.96));
+      border:1px solid rgba(148,163,184,0.55);
+      backdrop-filter:blur(14px);
+      box-shadow:0 20px 40px rgba(15,23,42,0.85);
+      transition:transform .2s, box-shadow .2s, border-color .2s;
+    }
+
+    .saeb-balao:hover{
+      transform:translateY(-4px);
+      box-shadow:0 26px 55px rgba(15,23,42,0.9);
+      border-color:var(--accent-1);
+    }
+
+    body.light .saeb-balao{
+      background:white;
+      box-shadow:0 14px 32px rgba(148,163,184,0.35);
+    }
+
+    .saeb-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:10px;
+    }
+
+    .saeb-header h2{
+      font-size:18px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .saeb-header h2::after{
+      content:"";
+      width:32px;height:3px;border-radius:999px;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2));
+    }
+
+    .btn{
+      padding:6px 12px; border-radius:999px; border:none;
+      background:var(--accent-1); color:#062022; font-weight:700;
+      cursor:pointer; transition:0.2s;
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .btn:hover{
+      transform:translateY(-1px);
+      background:#22d3ee;
+      box-shadow:0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    .chart-wrap{
+      margin-top:6px;
+    }
+
+    /* TEXTO "ONDE QUEREMOS CHEGAR" */
+    .saeb-meta{
+      margin-top:6px;
+      font-size:20px;
+      color:rgba(226,232,240,0.9);
+      text-align:center;
+      font-weight:500;
+    }
+    body.light .saeb-meta{
+      color:#0f172a;
+    }
+
+    /* PAINEL */
+    .panel-overlay{
+      position:fixed; inset:0; background:rgba(0,0,0,0.55);
+      display:none; align-items:center; justify-content:center;
+      z-index:200
+    }
+    .panel{
+      width:min(920px,96%); max-height:84vh; overflow:auto;
+      background:linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.92));
+      border-radius:14px; padding:18px;
+      border:1px solid rgba(148,163,184,0.5);
+      backdrop-filter:blur(16px)
+    }
+    body.light .panel{
+      background:white;
+    }
+
+    /* ÍCONES FLUTUANTES */
+    .social-float{
+      position:fixed;
+      right:18px; bottom:18px;
+      display:flex; flex-direction:column;
+      gap:12px; z-index:150;
+    }
+    .social-float a{
+      width:52px; height:52px;
+      border-radius:14px;
+      display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
+      color:white; font-size:22px;
+      text-decoration:none;
+      box-shadow:0 10px 24px rgba(0,0,0,0.35);
+      transition:.18s;
+    }
+    .social-float a:hover{
+      transform:translateY(-6px) scale(1.05);
+    }
+
+    /* FOOTER */
+    .site-footer{
+      margin-top:24px;
+      border-top:1px solid rgba(148,163,184,0.35);
+      background:linear-gradient(180deg, rgba(7,12,26,0.98), rgba(4,9,20,1));
+      padding:14px 20px;
+      font-size:13px;
+      color:rgba(226,232,240,0.86);
+    }
+    .site-footer-inner{
+      max-width:1200px;
+      margin:0 auto;
+      display:flex; justify-content:space-between;
+      align-items:center; flex-wrap:wrap;
+      gap:12px;
+    }
+
+    /* GALERIA MAIOR */
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:14px;
+    }
+    .gallery-grid img{
+      width:100%;
+      height:190px;
+      object-fit:cover;
+      border-radius:12px;
+    }
+
+    /* CARD MODERNO DAS FOTOS */
+    .foto-card{
+      position:relative;
+      border-radius:12px;
+      overflow:hidden;
+    }
+    .foto-card img{
+      width:100%;
+      height:190px;
+      object-fit:cover;
+      display:block;
+    }
+    .foto-card .legenda{
+      position:absolute;
+      bottom:6px;
+      left:6px;
+      background:rgba(0,0,0,0.55);
+      padding:4px 10px;
+      border-radius:6px;
+      font-size:13px;
+      color:white;
+      font-weight:500;
+    }
+
+    @media (max-width:560px){
+      .brand h1{display:none}
+      .site-footer-inner{flex-direction:column; text-align:center}
+      .saeb-header{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-fx"></div>
+
+  <header>
+    <div class="brand">
+      <img id="logoImg" src="fotos/logo.jpeg" alt="Logo da escola">
+      <div>
+        <h1>EMEF EZEQUIEL RUIZ II</h1>
+        <div style="font-size:12px;color:rgba(255,255,255,0.8)">A Educação começa em casa, a escola Lapida. "Equipe Ezequiel Ruiz" </div>
+      </div>
+    </div>
+    <button id="themeBtn" class="theme-toggle" title="Alternar tema">
+      <i id="themeIcon" class="fa-solid fa-moon"></i>
+    </button>
+  </header>
+
+  <section class="hero">
+    <div class="hero-card">
+      <div class="hero-title">
+        Bem-vindo à <strong style="color:var(--accent-1)">Nossa Escola</strong>
+        <span class="line"></span>
+      </div>
+      <div class="hero-sub">Projetos, resultados e participação da comunidade.</div>
+    </div>
+  </section>
+
+  <!-- BALÕES PRINCIPAIS -->
+  <div class="baloes-wrap">
+    <div class="baloes">
+
+      <!-- Balão Projetos -->
+      <div class="balao" onclick="openPanel('projects')">
+        <i class="fa-solid fa-book"></i>
+        <h3>Projetos</h3>
+        <p>Feiras, oficinas e ações</p>
+      </div>
+
+      <!-- Balão Informações -->
+      <div class="balao" onclick="openPanel('info')">
+        <i class="fa-solid fa-school"></i>
+        <h3>Informações</h3>
+        <p>Endereço, contato e horários</p>
+      </div>
+
+      <!-- Balão Galeria -->
+      <div class="balao" onclick="openPanel('gallery')">
+        <i class="fa-solid fa-image"></i>
+        <h3>Galeria</h3>
+        <p>Registros de eventos</p>
+      </div>
+
+      <!-- Balão Funcionários -->
+      <div class="balao" onclick="openPanel('staff')">
+        <i class="fa-solid fa-users"></i>
+        <h3>Funcionários</h3>
+        <p>Equipe escolar</p>
+      </div>
+
+      <!-- Balão Gestão / Eletivas -->
+      <div class="balao" onclick="openPanel('management')">
+        <i class="fa-solid fa-compass-drafting"></i>
+        <h3>Eletivas do Tempo Integral</h3>
+        <p></p>
+      </div>
+
+      <!-- Balão Perfil da Escola -->
+      <div class="balao" onclick="openPanel('perfil')">
+        <i class="fa-solid fa-school-flag"></i>
+        <h3>Perfil da Escola</h3>
+        <p>Identidade e características</p>
+      </div>
+
+      <!-- Balão Nossa Missão -->
+      <div class="balao" onclick="openPanel('missao')">
+        <i class="fa-solid fa-bullseye"></i>
+        <h3>Componente Currícular</h3>
+        <p>Propósito educativo</p>
+      </div>
+
+      <!-- Balão Nossa Visão -->
+      <div class="balao" onclick="openPanel('visao')">
+        <i class="fa-solid fa-eye"></i>
+        <h3>Alunos</h3>
+        <p>Papel Ativo</p>
+      </div>
+
+      <!-- Balão Metas -->
+      <div class="balao" onclick="openPanel('meta')">
+        <i class="fa-solid fa-chart-line"></i>
+        <h3>Legislação da Escola</h3>
+        <p>Objetivos e resultados</p>
+      </div>
+
+    </div>
+  </div>
+
+  <main>
+    <!-- HISTÓRICO ESCOLAR -->
+    <section class="card history-card">
+      <h2><i class="fa-solid fa-timeline"></i> Histórico Escolar</h2>
+      <p>
+        A Escola Municipal Ezequiel Ruiz II, está localizada na Comunidade Nossa Senhora de Fátima, na Vila de Bela Vista, 
+        na Zona Rural do município de Manacapuru-Amazonas, margem esquerda do Rio Solimões, distante da sede (Manacapuru), 
+        cerca de 23,2 km em linha reta, com acesso também por via fluvial. A referida escola foi criada através 
+        do Decreto GP/PMM nº 074 de 20 de Janeiro de 2012, de acordo com o registro das Escolas Municipais junto ao Ministério da Educação - MEC. A mesma 
+        recebeu este nome em homenagem ao grande vereador Ezequiel Ruiz Batista, que na década dos anos 70 dava grande assistência aos moradores 
+        da comunidade e adjacência. Em gratidão a tudo o que ele fez, os comunitários decidiram por o seu nome na escola que atende a 
+        maioria das crianças da comunidade. Desde o ano de sua fundação, a escola passou por algumas adequações que ampliaram a sua estrutura, 
+        comportando todos os alunos na escola, antes havia duas salas de aula, 01 cozinha e 02 banheiros (masculino e feminino). 
+        Somente em 2012 foram construídas mais 02 salas de aula. Em 2015 mais duas salas de aula em um laboratório de informática foram construídos. E em 2018, 
+        o grande sonho foi realizado, houve algumas adequações, no qual foi construída mais de 01 sala de aula, totalizando 07 salas de aula, 
+        01 laboratório de informática, 01 cozinha, 01 biblioteca, 01 secretaria, 01 diretoria, 01 sala de professores e 01 refeitório. 
+        A escola recebe recursos oriundos do governo federal e municipal, como: PDDE, PNAE, PROCAE, SALÁRIO EDUCAÇÃO, CRIANÇA ALFABETIZADA, 
+        EDUCAÇÃO CONECTADA, EDUCAÇÃO EM TEMPO INTEGRAL e aqueles adquiridos através das promoções realizadas pela escola. Além desses recursos a escola tem 
+        parceria com instituições existentes na comunidade, comunitários, com os pais dentre outros. No dia, 27 de junho do ano de 2024, a comunidade 
+        escolar recebe um novo prédio todo em alvenaria padrão FNDE, com 6 salas de aula, 01 diretoria, 01 sala de professores, 01 secretaria, 
+        02 banheiros para alunos, 02 banheiros para funcionários, 01 quadra poliesportiva coberta, 01 refeitório, 01 cozinha, almoxarifado e depósitos.
+        Hoje a escola atende 397 alunos, sendo 209 alunos do 1º ao 5º ano, 160 alunos de 6º ao 9º ano e 28 alunos do EJA - Educação de Jovens e Adutos. Vale ressaltar que a escola antes 
+        era anexa da EMEF São João do Ubim e em 2011 foi desmembrada tendo a primeira gestora a professora Edilza Santos de Oliveira, 
+        em 2012 professor Abelardo Gama Filho, de 2013 até os dias atuais, a professora Rosângela da Silva Trindade.
+      </p>
+    </section>
+
+    <!-- SAEB EM BALÃO CENTRALIZADO -->
+    <section class="saeb-section">
+      <div class="saeb-balao">
+        <div class="saeb-header">
+          <h2>IDEB / SAEB — Histórico</h2>
+          <button class="btn" id="openSaebPanelBtn">Abrir SAEB</button>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="saebChartInlineSmall" style="height:260px"></canvas>
+        </div>
+        <div class="saeb-meta">
+          <strong>🎯ONDE QUEREMOS CHEGAR:</strong> 7,5 em 2025
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div>
+        <b>EMEF EZEQUIEL RUIZ II</b><br>
+        Educação e tecnologia que transformam vidas • Manacapuru/AM
+      </div>
+
+      <div>
+        Rua Barroso s/n • Horário: 07h às 17h<br>
+        Contato: (92) 9924-4445 • emefezequielruizii@gmail.com
+      </div>
+    </div>
+  </footer>
+
+  <!-- ÍCONES FLUTUANTES -->
+  <div class="social-float">
+    <a href="https://www.instagram.com/estephanefts?igsh=MThhOGUyZ3ZsZHRpZg%3D%3D&utm_source=qr" target="_blank" title="Instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://wa.me/5592922-44445" target="_blank" title="WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+    <a href="https://www.facebook.com/share/1TwQtvS9Ww/?mibextid=wwXIfr" target="_blank" title="Facebook">
+      <i class="fab fa-facebook-f"></i>
+    </a>
+  </div>
+
+  <!-- PAINÉIS (CONTEÚDOS QUE ABREM AO CLICAR NOS BALÕES) -->
+  <div id="panelOverlay" class="panel-overlay" onclick="closePanel()">
+    <div class="panel" onclick="event.stopPropagation()">
+      <button onclick="closePanel()" class="btn" style="background:#ef4444;margin-bottom:10px">Fechar</button>
+
+      <!-- PROJETOS -->
+      <div id="panel-projects" style="display:none">
+        <h2>📝Projetos da Escola</h2>
+        <ul>
+          <li><b>Projeto Lingua Portuguesa</b> - Inovar para Transformar</li>
+          <li><b>Iniciação Científica</b> – As experiências científicas gerando aprendizagens</li>
+          <li><b>Informática</b> – Programando Robociclagem com um Futuro Sustentável</li>
+          <li><b>Matemática</b> – (Projeto I Matemática e água uma equação essencial para a vida), (Projeto ll A Matemática no Trânsito), 
+            (Projeto lll Lanchonete das Frações)</li>
+
+          <h2>📝Projetos da Semec</h2>
+          <li><b>Projeto viajando nos caminhos da leitura e nas ondas da produção</b></li>
+          <li><b>Projeto de Matemática em Ação</b> – Viajando no Mundo dos Algoritmos</li>
+        </ul>
+      </div>
+
+      <!-- INFORMAÇÕES -->
+      <div id="panel-info" style="display:none">
+        <h2>Informações da Escola</h2>
+        <p><b>Endereço:</b> Rua Barroso s/n, Bairro: Zona Rural, Manacapuru/AM</p>
+        <p><b>Telefone:</b> (92) 99224-4445, (92) 98437-6684</p>
+        <p><b>Email:</b> emefezequielruizii@gmail.com</p>
+        <p><b>Horário de funcionamento:</b> 07:00 às 17:00</p>
+      </div>
+
+      <!-- GALERIA (CARD MODERNO) -->
+      <div id="panel-gallery" style="display:none">
+        <h2>Galeria de Fotos</h2>
+        <div class="gallery-grid">
+
+          <!-- ANTES -->
+          <div class="foto-card">
+            <img src="fotos/foto1.jpeg" alt="O ANTES">
+            <span class="legenda">O ANTES</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 2.jpeg" alt="O ANTES">
+            <span class="legenda">O ANTES</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 3.jpeg" alt="O ANTES">
+            <span class="legenda">O ANTES</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 4.jpeg" alt="O ANTES">
+            <span class="legenda">O ANTES</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 5.jpeg" alt="O ANTES">
+            <span class="legenda">O ANTES</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 6.jpeg" alt="O ANTES">
+            <span class="legenda">O ANTES</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 7.jpeg" alt="O ANTES">
+            <span class="legenda">O ANTES</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 8.jpeg" alt="O ANTES">
+            <span class="legenda">O ANTES</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 9.jpeg" alt="O ANTES">
+            <span class="legenda">O ANTES</span>
+          </div>
+
+          <!-- AGORA -->
+          <div class="foto-card">
+            <img src="fotos/foto 10.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 11.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 12.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 13.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 14.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 15.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 16.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 17.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 18.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 19.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 20.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 21.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 22.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 23.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 24.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 25.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 26.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 27.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 28.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 29.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 30.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 31.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 32.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 33.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 34.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 35.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+          <div class="foto-card">
+            <img src="fotos/foto 36.jpeg" alt="O AGORA">
+            <span class="legenda">O AGORA</span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FUNCIONÁRIOS -->
+      <div id="panel-staff" style="display:none">
+        <h2>Quadro de Funcionários</h2>
+
+        <h3>👥Equipe Gestora</h3>
+        <ul>
+          <li><b>Diretora:</b> Rosângela da Silva Trindade</li>
+          <li><b>Secretária:</b> Mônica da Cruz Silva</li>
+          <li><b>Coordenador Pedagógico:</b> Jeovane Anjos dos Santos</li>
+          <li><b>Coordenadora Pedagógica:</b> Maria Raimunda Bezerra Câmara</li>
+        </ul>
+
+        <h3 style="margin-top:10px">🧑‍🏫Professores</h3>
+        <ul>
+          <li>Adria Fernanda Ramos da Cunha Brito</li>
+          <li>Adriana Santos de Souza</li>
+          <li>Alcenir Alves da Silva</li>
+          <li>Alcinéia da Costa Gomes</li>
+          <li>Ana Cleusa Pereira Cardoso</li>
+          <li>Alysson Souza de Almeida</li>
+          <li>Cézar Silva dos Santos</li>
+          <li>Danielle Rodrigues da Rocha</li>
+          <li>Deborah Kelly Santa Rita Gonçalves</li>
+          <li>Eudilene da Silva Ribeiro</li>
+          <li>Gleice Adames da Silva</li>
+          <li>Greice Kelly Frota Freitas</li>
+          <li>Janaina da Silva Trindade</li>
+          <li>Jaqueline Soares Nascimento</li>
+          <li>Odair da Costa Pedrosa</li>
+          <li>Oldeney Douglas da Costa Pedrosa</li>
+          <li>Rosana Thalia dos Anjos Santiago</li>
+          <li>Sabrina Ferreira de Araújo</li>
+          <li>Simone Coutinho da Conceição</li>
+          <li>Tamires Bastos de Oliveira</li>
+          <li>Thalita Nascimento de Oliveira</li>
+          <li>Valdenora Souza Mota</li>
+          <li>Weynna dos Santos Trindade</li>
+        </ul>
+
+        <h3 style="margin-top:10px">🧑‍🏫Assistente de PCD</h3>
+        <ul>
+          <li>Arijane Santos de Souza Torres</li>
+        </ul>
+
+        <h3 style="margin-top:10px">🧑‍🏫Auxiliar Educacional</h3>
+        <ul>
+          <li>Alcilene Silva Rios</li>
+          <li>Heloisa Raquel Gomes da Costa</li>
+          <li>Francisca Silva de Souza</li>
+        </ul>
+
+        <h3 style="margin-top:10px">👩🏻‍💻Auxiliar Administrativos</h3>
+        <ul>
+          <li>Beatriz da Silva Vasconcelos</li>
+          <li>Estephane da Cruz Fontes</li>
+          <li>Gisele da Silva de Vasconcelos</li>
+          <li>Françoár Barbosa Maciel Júnior</li>
+        </ul>
+
+        <h3 style="margin-top:10px">👩‍🍳Merendeiras</h3>
+        <ul>
+          <li>Adriane de Nazaré da Silva</li>
+          <li>Edimara Morais Oliveira</li>
+          <li>Elizangela Silva de Oliveira</li>
+          <li>Jennifer Santos de Araújo</li>
+        </ul>
+
+        <h3 style="margin-top:10px">👷‍♀️ASG</h3>
+        <ul>
+          <li>Carmen dos Santos Matos</li>
+          <li>Daniele Sales da Conceição</li>
+          <li>Davina Taveira de Melo</li>
+          <li>Eunice Perereira Silva</li>
+          <li>Gabriel Gonçalves da Silva</li>
+          <li>Keila Oliveira Mesquita</li>
+          <li>Kézia Rodrigues Bastos</li>
+          <li>Leila Oliveira Mesquita</li>
+          <li>Zudenira Barbosa de Oliveira</li>
+          <li>Raiane da Conceição Barbosa</li>
+          <li>Silvane Garcia Cardoso</li>
+        </ul>
+
+        <h3 style="margin-top:10px">👨‍✈️Vigia/Portaria</h3>
+        <ul>
+          <li>Ademir Fonseca da Costa</li>
+          <li>Francisco Barbosa de Oliveira</li>
+          <li>Jondson Silva dos Santos</li>
+          <li>Valdeni Santos da Silva</li>
+          <li>Williams Oliveira de Jesus</li>
+        </ul>
+
+        <h3 style="margin-top:10px">👨‍🦰Motorista</h3>
+        <ul>
+          <li>Francisco Odeli Rodrigues Bastos</li>
+        </ul>
+
+        <h3 style="margin-top:10px">👨‍🦰Motoristas/Colaboradores</h3>
+        <ul>
+          <li>Tiago Martins Frota</li>
+          <li>Geraldo Aldemir de Oliveira</li>
+          <li>Moisés Silva dos Santos</li>
+          <li>Natanael Santos da Mota</li>
+          <li>Raimundo Francelino Gomes</li>
+        </ul>
+
+        <h3 style="margin-top:10px">👨‍🦰Monitor Escolar</h3>
+        <ul>
+          <li>Daniel Maquiné da Silva</li>
+        </ul>
+      </div>
+
+      <!-- Eletivas do Tempo Integral (corrigido) -->
+      <div id="panel-management" style="display:none;
+               margin-top:10px;
+               padding:12px;
+               border:1px solid rgba(148,163,184,0.6);
+               border-radius:10px;
+               background:rgba(15,23,42,0.9);
+               box-sizing:border-box;
+               max-width:100%;
+               overflow-wrap:break-word;">
+        <h2 style="margin-top:0;margin-bottom:8px;">Eletivas do Tempo Integral</h2>
+
+        <p><b>📚 ELETIVAS 1º ao 4º</b></p>
+        <p>📖 Canto e coral</p>
+        <p>📖 Jogos e Recreações</p>
+        <p>📖 Comunicação, uso de Mídias e Cultura Digital e Tecnologia</p>
+        <p>📖 Acompanhamento Pedagógico de Língua Portuguesa</p>
+        <p>📖 Acompanhamento Pedagógico de Matemática</p>
+
+        <p style="margin-top:10px;"><b>📚 ELETIVAS 5º ao 9º</b></p>
+        <p>📖 Iniciação Científica</p>
+        <p>📖 Acompanhamento Pedagógico de Língua Portuguesa</p>
+        <p>📖 Acompanhamento Pedagógico de Matemática</p>
+        <p>📖 Comunicação, uso de Mídias e Cultura Digital e Tecnologia</p>
+      </div>
+
+      <!-- PERFIL DA ESCOLA -->
+      <div id="panel-perfil" style="display:none">
+        <h2>Perfil da Escola</h2>
+        <p>🎯Objetivo</p>
+        <p>
+          Oferecer ensino de qualidade, para formar alunos que sejam capazes de compreender o mundo e suas transformações sociais, 
+          culturais ambientais, políticas e tecnológicas, interagindo com ele de forma inteligente, consciente e responsável.
+        </p>
+        <p>📈Metas</p>
+        <p>✔️Promover 99% dos alunos matriculados em 2025 todos com os conhecimentos necessários e compatíveis ao ano/série em que estejam matriculados;</p>
+        <p>✔️Permanecer o Índice de reprovação no geral de 0,2% no ano de 2025;</p>
+        <p>✔️Aproximar ainda mais os pais e/ou responsáveis da comunidade escolar, por meio de atividades sociais e pedagógicas que promovam a interação com a escola.</p>
+
+        <p>🤝🏼Valores</p>
+        <p>✔️PARTICIPAÇÃO - Trabalho em equipe com forte senso de compromisso e competência.</p>
+        <p>✔️COMPROMISSO - Somos comprometidos com todo e qualquer trabalho realizado pela escola.</p>
+        <p>✔️EXCELÊNCIA - Valorizamos nossos alunos com um trabalho de qualidade e excelência em tudo que fizermos e pelo modo como o fazemos.</p>
+
+        <p>🔰Nossa Missão</p>
+        <p>
+          Sermos uma escola de reconhecimento no munícipio e no estado pela participação, 
+          desenvolvimento, criatividade e inovação de nossa equipe juntamente com os alunos, os pais e a comunidade.
+        </p>
+      </div>
+
+      <!-- NOSSA MISSÃO (Componentes Curriculares) -->
+      <div id="panel-missao" style="display:none">
+        <h2>Componente Currícular</h2>
+        <p>✏️Lingua Portuguesa</p>
+        <p>✏️Matemática</p>
+        <p>✏️História</p>
+        <p>✏️Geografia</p>
+        <p>✏️Ciências</p>
+        <p>✏️Ensino das Artes</p>
+        <p>✏️Educação Física</p>
+        <p>✏️Ensino Religioso</p>
+        <p>✏️Lingua Inglesa</p>
+      </div>
+
+      <!-- ALUNOS -->
+      <div id="panel-visao" style="display:none">
+        <h2>👨‍🎓Alunos do 1º Ano A</h2>
+<p>1. Amarilis Farias de Almeida</p>
+<p>2. Ana Lara Barbosa Trindade</p>
+<p>3. Analu Tanaka da Silva</p>
+<p>4. Andreza Elloyza Martins dos Santos</p>
+<p>5. Camylly Emanuella de Oliveira Gomes</p>
+<p>6. Cleucy Aryana da Silva Oliveira</p>
+<p>7. Cristhian Rhavy Nunes da Silva</p>
+<p>8. Cybelle Conceição da Silva</p>
+<p>9. Elias Emanuel Costa Souza</p>
+<p>10. Elisa Rodrigues Frota</p>
+<p>11. Emerson Silva da Silva</p>
+<p>12. Gael Santos de Souza</p>
+<p>13. Guilherme Klinger Santos Viana</p>
+<p>14. Heloísa Vitória Maciel dos Santos</p>
+<p>15. Isabel Ohana Gonçalves da Cruz</p>
+<p>16. João Lucas de Queiroz Amaral</p>
+<p>17. João Lucas Silva Rios</p>
+<p>18. Juliano Josué Façanha de Freitas</p>
+<p>19. Kamyla Gomes Souza</p>
+<p>20. Kelly Yohana Andrade da Silva</p>
+<p>21. Lara Silva dos Santos</p>
+<p>22. Pedro Cauâ Barroso Alves</p>
+<p>23. Yuri Trindade da Silva</p>
+ 
+        <h2>👨‍🎓Alunos do 1º Ano B</h2>
+<p>1. Ágatha Jasmine Vasconcelos Marques</p>
+<p>2. Agatha Nicolly Cascaes da Silva</p>
+<p>3. Alice Elohá da Silva</p>
+<p>4. Arthur Guilherme de Oliveira Rodrigues</p>
+<p>5. Clara Rielly Taveira de Melo Oliveira</p>
+<p>6. Davi Lucas Bentes da Silva</p>
+<p>7. Davi Luiz Araújo dos Santos</p>
+<p>8. Davi Luiz Reis da Conceição</p>
+<p>9. Davi Ribeiro Falcão</p>
+<p>10. Enzo Gabriel Silva dos Santos</p>
+<p>11. Guilherme Nascimento de Oliveira</p>
+<p>12. Gustavo Gomes da Silva</p>
+<p>13. Izaias da Conceição</p>
+<p>14. Jeferson Cunha da Silva</p>
+<p>15. João Felipe Castro da Silva</p>
+<p>16. Jonieriton Souza Lima</p>
+<p>17. José Arthur dos Santos Maia</p>
+<p>18. Josué Queiroz Coelho</p>
+<p>19. Luan Anacures da Silva</p>
+<p>20. Mayana Victoria dos Santos Jerônimo</p>
+<p>21. Miriam Vitória dos Santos Andrade</p>
+<p>22. Nelzimar de Oliveira Souza Júnior</p>
+<p>23. Safira Helena da Silva Peixoto</p>
+<p>24. Thayllon Henrico Moreno de Freitas</p>
+
+      <h2>👨‍🎓Alunos do 2º Ano</h2>
+<p>1. Ágatha Barroso Alves</p>
+<p>2. Alice Heloyse Botelho de Freitas</p>
+<p>3. Anah Mirella da Mata de Amorim</p>
+<p>4. Anna Nayllah Mesquita Martins</p>
+<p>5. Antônio Gael de Brito Pereira</p>
+<p>6. Ariela Sophia Soares da Silva</p>
+<p>7. Dhavila Loanny Nascimento Rodrigues</p>
+<p>8. Elane Queiroz Soares</p>
+<p>9. Ezequiel Carvalho Rodrigues</p>
+<p>10. Gabriel da Silva da Silva</p>
+<p>11. Heitor Trindade Nascimento</p>
+<p>12. Jadson Kauê Silva Reis</p>
+<p>13. João Otávio Pereira Paiva</p>
+<p>14. José Guilherme Pereira Paraizo</p>
+<p>15. Kalilson Reis Oliveira</p>
+<p>16. Karoline Frota de Souza</p>
+<p>17. Manoella dos Santos Cordeiro</p>
+<p>18. Maria Helena Venâncio da Silva</p>
+<p>19. Maria Luiza Nunes Lucas</p>
+<p>20. Ryan Nascimento de Brito</p>
+<p>21. Samantha Garcia de Souza</p>
+<p>22. Ulisses Moura da Costa</p>
+
+         <h2>👨‍🎓Alunos do 3º Ano</h2>
+<p>1. Adryan Fernando Cunha Brito</p>
+<p>2. Ágatha Gabriely Bentes de Almeida</p>
+<p>3. Alana Melissa Oliveira Gomes</p>
+<p>4. Amanda Silva dos Santos Rodrigues</p>
+<p>5. Ana Júlia Nascimento dos Santos</p>
+<p>6. Ana Vitória Gondim Maia</p>
+<p>7. Anthony Felipe Lemos dos Santos</p>
+<p>8. Bruno Gael Vasconcelos da Silva</p>
+<p>9. Bryan Josué Souza de Freitas</p>
+<p>10. Camila Cristine de Souza Barbosa</p>
+<p>11. Debora Vasconcelos de Souza</p>
+<p>12. Dhessica Vitória Freitas Pessoa</p>
+<p>13. Esther Ferreira Macena</p>
+<p>14. Ethan Dias Medeiros</p>
+<p>15. Ewellyn Bruna da Silva Ribeiro</p>
+<p>16. Jadson Soares Seixas</p>
+<p>17. João Benjamim Vicente Lomas</p>
+<p>18. João Miguel Bastos da Silva</p>
+<p>19. Joelly da Silva Oliveira</p>
+<p>20. Levy Lorran Almeida da Silva</p>
+<p>21. Lorenzo Miguel da Silva Queiroz</p>
+<p>22. Lunna Valentina Tavares de Andrade</p>
+<p>23. Mickael Rios dos Santos</p>
+<p>24. Naylane Souza de Araújo</p>
+<p>25. Roberta Freitas da Silva</p>
+<p>26. Sofia Martins Barros</p>
+<p>27. Thamires da Silva Rios</p>
+<p>28. Thiago Reis Viana</p>
+
+
+         <h2>👨‍🎓Alunos do 2º e 3º MULTI</h2>
+<p>1. Ana Louise Gonzaga Varela</p>
+<p>2. Davi Lucas Peres da Silva</p>
+<p>3. Elis Sandy Araújo Rodrigues</p>
+<p>4. Enzo Benício dos Santos Salvino</p>
+<p>5. Hian Santos de Souza</p>
+<p>6. Isabella dos Santos Bezerra</p>
+<p>7. Johnny Taylor Silva Moura</p>
+<p>8. Keliane Sibele Silva da Silva</p>
+<p>9. Luan Miguel Castro de Souza</p>
+<p>10. Lucas Daniel Castro da Silva</p>
+<p>11. Maria Tacilia Fleury Gomes</p>
+<p>12. Renan dos Santos Souza</p>
+<p>13. Renato de Araújo Ferreira</p>
+<p>14. Vivian Elloah Freitas da Silva</p>
+<p>15. Ávyla Tanaka Monteiro</p>
+<p>16. Eliezer de Souza Fernandes</p>
+<p>17. Gustavo Oliveira Zimmermann</p>
+<p>18. Jhonatas Carmo Pereira</p>
+<p>19. Luandson Nascimento de Oliveira</p>
+<p>20. Manuele da Silva Ribeiro</p>
+<p>21. Maria Izabelly da Conceição Tomaz</p>
+<p>22. Melissa Aparecida Melo Pinto</p>
+<p>23. Ylana Beatriz da Silva Moreira</p>
+
+
+           <h2>👨‍🎓Alunos do 4º Ano</h2>
+<p>1. Adria Fernanda Almeida Nascimento</p>
+<p>2. Ágatha Polyana Andrade dos Santos</p>
+<p>3. Ana Julia Moreira de Andrade</p>
+<p>4. Ana Liz de Souza Alves</p>
+<p>5. Antônio Victor Moura Praia</p>
+<p>6. Breno Felipe Ferreira dos Santos</p>
+<p>7. Bruno Emanoel Ribeiro Feitoza</p>
+<p>8. Elizeu Juliano Araújo Rodrigues</p>
+<p>9. Fátima Rayandra de Souza Moreira</p>
+<p>10. Guilherme Oliveira Goiano</p>
+<p>11. Isabel Lustosa Carneiro</p>
+<p>12. Josiel Taylon Silva dos Santos</p>
+<p>13. Levy Freitas de Oliveira</p>
+<p>14. Luis Fernando Araújo Rios</p>
+<p>15. Maria Victória Oliveira de Freitas</p>
+<p>16. Mary Hellen dos Santos Cordeiro</p>
+<p>17. Melissa Mel Souza Menezes</p>
+<p>18. Mylla Kyara Ferreira de Oliveira</p>
+<p>19. Mirelly Gonçalves da Silva</p>
+<p>20. Moroni da Mata Paiva</p>
+<p>21. Renan de Araújo Ferreira</p>
+<p>22. Rômulo dos Santos Souza</p>
+<p>23. Sofia da Silva Gama</p>
+<p>24. Stefhany da Silva Martins</p>
+<p>25. Vadson Martins Oliveira</p>
+<p>26. Vinícius dos Santos Reis</p>
+<p>27. Vinicius Samuel Ferreira dos Santos</p>
+<p>28. Yuri Gustavo Andrade da Silva</p>
+
+          
+          <h2>👨‍🎓Alunos do 5º Ano A</h2>
+<p>1. Adria Pereira Paiva</p>
+<p>2. Ana Vitória Rios da Silva</p>
+<p>3. Davi Luiz Silva dos Santos</p>
+<p>4. Hagatta Santos da Silva</p>
+<p>5. Ingrid da Silva Nogueira</p>
+<p>6. Isadora Caroline Nunes Pereira</p>
+<p>7. Izadora da Conceição Bastos</p>
+<p>8. Israele da Silva Oliveira</p>
+<p>9. Leticia Vitoria Freita da Costa</p>
+<p>10. Luciany Oliveira Zimmermann</p>
+<p>11. Luiz Gabriel Lustosa Carneiro</p>
+<p>12. Maria Heloísa de Souza Cordeiro</p>
+<p>13. Maria Rita de Oliveira Bastos</p>
+<p>14. Nataly Souza do Carmo</p>
+<p>15. Nicolly Moura da Costa</p>
+<p>16. Rayssa dos Anjos Ferreira</p>
+<p>17. Revelyn Rosário Ferreira Vital</p>
+<p>18. Rogério Martins Gomes</p>
+<p>19. Rosa Maria Miranda Cavalcante</p>
+<p>20. Roziana Amorim Lopes</p>
+<p>21. Ryan Maquiné da Silva</p>
+<p>22. Ryane Francisca Santiago de Oliveira</p>
+<p>23. Sara Victória da Silva Ribeiro</p>
+<p>24. Ticyane Martins Frota Viegas</p>
+<p>25. Tuane de Araújo Ferreira</p>
+<p>26. Yan Henrique Batista de Souza</p>
+
+
+         <h2>👨‍🎓Alunos do 5º Ano B</h2>
+<p>1. Ana Luiza Costa de Souza</p>
+<p>2. Artur Gabriel Lima de Oliveira</p>
+<p>3. Bruno Eduardo Ferreira dos Santos</p>
+<p>4. Carlos Alexandre de Souza Nascimento</p>
+<p>5. Cliciane Roque Cruz</p>
+<p>6. Deivison Martins Paiva</p>
+<p>7. Dienisson da Silva Rios</p>
+<p>8. Edmilton Dias Fontes Neto</p>
+<p>9. Elizel dos Santos Amazonas</p>
+<p>10. Gustavo de Souza Magalhães</p>
+<p>11. Joaquim Queiroz Coelho</p>
+<p>12. Juliano da Silva Gama</p>
+<p>13. Luana Nascimento de Oliveira</p>
+<p>14. Marcos Gabriel Souza da Silva</p>
+<p>15. Maria Eduarda da Silva Barroso</p>
+<p>16. Odanilson João Reis Viana</p>
+<p>17. Otávio Cristhofer Oliveira Silva</p>
+<p>18. Paulo Enrick dos Santos Reis</p>
+<p>19. Raílson Barroso Silva</p>
+<p>20. Raphael Melo de Oliveira</p>
+<p>21. Romerito dos Santos Souza</p>
+<p>22. Tiago Sem de Souza Pedrosa</p>
+
+          <h2>👨‍🎓Alunos do 6º Ano A</h2>
+<p>1. Ágatha Tanaka da Silva</p>
+<p>2. Ana Clara Gomes da Silva</p>
+<p>3. Ana Mel Bezerra Câmara</p>
+<p>4. Anna Livia da Costa de Oliveira</p>
+<p>5. Caroline Viana da Silva</p>
+<p>6. Daniel Carvalho de Melo</p>
+<p>7. Dennys Adriano dos Santos Costa</p>
+<p>8. Felipe Silva da Silva</p>
+<p>9. Isabella Vanessa Bentes Freitas</p>
+<p>10. Isabelly Kauane Barbosa Trindade</p>
+<p>11. João Miguel Gonzaga da Mata</p>
+<p>12. Juliana de Freitas Gomes</p>
+<p>13. Laylla da Silva Simões</p>
+<p>14. Layla Sophia Silva dos Santos</p>
+<p>15. Lorena Victoria da Silva Martins</p>
+<p>16. Luis Davi Silva de Souza</p>
+<p>17. Melissa Luane dos Santos Andrade</p>
+<p>18. Milena Silva da Costa</p>
+<p>19. Nícole Cristina de Almeida Silva</p>
+<p>20. Nicole Lomas da Silva</p>
+<p>21. Ózio Gustavo Oliveira de Freitas</p>
+<p>22. Paulo Henrique Costa Felix da Silva</p>
+<p>23. Paulo Henrique Trindade de Oliveira</p>
+<p>24. Rangel Reis Rolim</p>
+<p>25. Rhana Beatriz Silva da Silva</p>
+<p>26. Rhanna Ednéia Felipe Gondim Guimarães</p>
+<p>27. Sandra Façanha Bastos</p>
+<p>28. Thainã Mariah Alves Oliveira</p>
+
+          <h2>👨‍🎓Alunos do 6º Ano B</h2>
+<p>1. Anna Magali de Souza Barbosa</p>
+<p>2. Antonio Amorim Lopes</p>
+<p>3. Antônio Ricardo Pinto da Costa</p>
+<p>4. Arthur Everton Monteiro da Silva</p>
+<p>5. Carlos Antônio Souza de Araújo</p>
+<p>6. Diego dos Santos Trindade</p>
+<p>7. Elias da Silva Soares</p>
+<p>8. Emilly Sophia Nascimento Gonçalves</p>
+<p>9. Evelly Vitória Santos dos Santos</p>
+<p>10. Evellyn Beatriz Martins dos Santos</p>
+<p>11. Ezequiel Bentes de Almeida</p>
+<p>12. Fernando Almeida Viana</p>
+<p>13. Henrique Moura Praia</p>
+<p>14. Kayo Juan Maciel Praia</p>
+<p>15. Levi Oliveira Neves</p>
+<p>16. Lorrana da Silva Gonçalves</p>
+<p>17. Lorrana Vitória Pereira dos Santos</p>
+<p>18. Lorrandra Kemily Almeida da Silva</p>
+<p>19. Lucas Felipe Marques da Silva</p>
+<p>20. Mayllene Santos da Silva</p>
+<p>21. Michel Assis Frota Reis</p>
+<p>22. Pedro Gustavo Maciel de Souza</p>
+<p>23. Rayana Nascimento de Brito</p>
+<p>24. Rocco Freitas da Silva</p>
+<p>25. Sérgio Henrique Araújo Rios</p>
+<p>26. Valéria Viana da Silva</p>
+
+          <h2>👨‍🎓Alunos do 7º Ano</h2>
+<p>1. Adriel Emílio Oliveira Fernandes</p>
+<p>2. Ágata Hadassa Oliveira Silva</p>
+<p>3. Alexsandra Costa de Souza</p>
+<p>4. Anna Júlia Oliveira da Silva</p>
+<p>5. Bruno de Oliveira Martins</p>
+<p>6. Calebe Nascimento dos Santos</p>
+<p>7. Ester da Silva Oliveira</p>
+<p>8. Ewerton Bruno da Silva Ribeiro</p>
+<p>9. Gabriel Silva dos Santos</p>
+<p>10. Guilherme Reis dos Santos</p>
+<p>11. Izaias da Costa Coitinho</p>
+<p>12. Jheffley da Silva dos Santos</p>
+<p>13. Johnny Petrick Tanaka de Freitas</p>
+<p>14. Juliana Felipe Gondim</p>
+<p>15. Juliana Nascimento Martins</p>
+<p>16. Kaline Reis Oliveira</p>
+<p>17. Lara Manuely Ribeiro Rodrigues</p>
+<p>18. Levi Andrey da Silva de Vasconcelos</p>
+<p>19. Márcos Alexssandre Vasconcelos de Barbosa</p>
+<p>20. Maria Eduarda de Oliveira Maciel</p>
+<p>21. Maria Lorena Lucas Bezerra</p>
+<p>22. Mirlene Nascimento de Almeida</p>
+<p>23. Natanaely Silva da Silva</p>
+<p>24. Paulo Victor dos Santos Jeronimo</p>
+<p>25. Pedro Henrique Ribeiro Gomes</p>
+<p>26. Rafael Valente Costa</p>
+<p>27. Raquel Miranda Cavalcante</p>
+<p>28. Rayssa Mallmann de Freitas</p>
+<p>29. Renê Júnior Queiroz Soares</p>
+<p>30. Ruthe Helen Ferreira Pinheiro</p>
+<p>31. Salomão Brahim de Souza Barbosa</p>
+<p>32. Samara Lima Mesquita</p>
+<p>33. Sâmila Sibelly de Souza Nascimento</p>
+<p>34. Samuel Martins da Silva</p>
+<p>35. Sthefany Bernal da Silva</p>
+<p>36. Taylan Castro da Silva Guerra</p>
+<p>37. Wenderson da Silva Paz</p>
+
+          <h2>👨‍🎓Alunos do 8º Ano</h2>
+<p>1. Alana Pinheiro de Almeida</p>
+<p>2. Alexsandro Barroso Silva</p>
+<p>3. Ana Clara dos Santos Maia</p>
+<p>4. Analicy da Silva Coutinho</p>
+<p>5. Dáfine Francine Nascimento Rodrigues</p>
+<p>6. Damares Martins dos Santos</p>
+<p>7. Emilli Caroline Gonzaga Mendonça</p>
+<p>8. Gabriel dos Santos Torres</p>
+<p>9. Guilherme Carvalho dos Santos</p>
+<p>10. Gustavo de Oliveira Martins</p>
+<p>11. Ikaro Yan da Conceição</p>
+<p>12. Isabelle Carvalho Rodrigues</p>
+<p>13. Isabelle Vitória Bentes Freitas</p>
+<p>14. Ismael de Araújo Ferreira</p>
+<p>15. Jaime Frota da Silva</p>
+<p>16. Jhenyffer da Silva dos Santos</p>
+<p>17. Johnatan Carvalho Pedrosa</p>
+<p>18. Ketelen Beatriz Frota da Silva</p>
+<p>19. Keyte Monique da Silva Francinê</p>
+<p>20. Lauan Soares Pereira</p>
+<p>21. Lorrana Nascimento de Oliveira</p>
+<p>22. Manuele Silva da Silva</p>
+<p>23. Matheus Marques da Silva</p>
+<p>24. Miguel Francisco Carvalho Coelho</p>
+<p>25. Mirela Maciel da Silva</p>
+<p>26. Nícolas da Conceição Santiago</p>
+<p>27. Rannata Tanaka Monteiro</p>
+<p>28. Raquelly da Silva Bastos</p>
+<p>29. Renata Roberta Bezerra Ribeiro</p>
+<p>30. Renan Santiago de Oliveira</p>
+<p>31. Rosana Amorim Lopes</p>
+<p>32. Ruan Soares Ferreira</p>
+<p>33. Sofhia da Silva Moreira</p>
+<p>34. Vinicius Rian Silva dos Santos</p>
+
+          <h2>👨‍🎓Alunos do 9º Ano</h2>
+<p>1. Ana Jhennifer Souza Ribeiro</p>
+<p>2. André Vítor Cardoso Gadelha</p>
+<p>3. Camile de Freitas Mallmann</p>
+<p>4. Cassielle Silva de Souza</p>
+<p>5. Darlan Santos do Nascimento</p>
+<p>6. David Martins Paiva</p>
+<p>7. Edson Pablo da Silva Santos</p>
+<p>8. Emilly Nathaly dos Santos Andrade</p>
+<p>9. Francisco Eduardo da Silva Barroso</p>
+<p>10. Isabella Gonzaga Pereira</p>
+<p>11. Israel da Silva Oliveira</p>
+<p>12. Ivanilson de Sousa Freitas Junior</p>
+<p>13. Janilly de Souza Torres</p>
+<p>14. Jean de Oliveira Martins</p>
+<p>15. Joanadab Lima de Aquino</p>
+<p>16. João Vítor Souza do Nascimento</p>
+<p>17. Joelson Rios Rodrigues</p>
+<p>18. José Manuel Souza de Freitas</p>
+<p>19. Keyse Frota de Freitas</p>
+<p>20. Letícia da Silva Nogueira</p>
+<p>21. Luan Nascimento de Oliveira</p>
+<p>22. Luandri Oliveira Mesquita</p>
+<p>23. Ludmylla Costa Félix da Silva</p>
+<p>24. Luiz Fernando Medeiros Gomes</p>
+<p>25. Marcos Alexandre Oliveira da Silva</p>
+<p>26. Maria Isabelle Tavares de Andrade</p>
+<p>27. Micael Lucas dos Santos</p>
+<p>28. Milena Gondim Maia</p>
+<p>29. Nayana Antônia Souza de Araújo</p>
+<p>30. Nayr Paola Santos Feitosa</p>
+<p>31. Nicoly Bernardo Valente</p>
+<p>32. Raquel da Silva Veloso</p>
+<p>33. Rhanna Francyne da Silva Oliveira</p>
+<p>34. Riquelme Maia Batista</p>
+<p>35. Sarah Oliveira Neves</p>
+<p>36. Silvia Raquel Ribeiro Gama</p>
+<p>37. Talison Silva de Menezes</p>
+<p>38. Thayane Vitória de Moraes Cativo</p>
+<p>39. Vítor Hugo Silva da Costa</p>
+<p>40. Wellygton Martins Pinto</p>
+
+      </div>
+
+      <!-- METAS DA ESCOLA / LEGISLAÇÕES -->
+      <div id="panel-meta" style="display:none">
+        <h2>Legislações da Escola</h2>
+        <ul>
+          <li><b>📍Regimento Geral das Escolas</b> - ATUALIZADO ✅</li>
+          <li><b>📍Regimento da Escola Interno</b> - ATUALIZADO ✅</li>
+          <li><b>📍PPP - Projeto Político Pedagógico</b> - ATUALIZADO ✅</li>
+          <li><b>📍Tempo Integral - Proposta Curricular Pedagógica</b> - ATUALIZADO ✅</li>
+          <li><b>📍PCP - Proposta Curricular e Pedagógica</b> - ATUALIZADO ✅</li>
+        </ul>
+      </div>
+
+      <!-- SAEB DETALHADO -->
+      <div id="panel-saeb" style="display:none">
+        <h2>SAEB – Detalhamento dos Resultados</h2>
+        <p class="saeb-meta" style="margin-top:4px;margin-bottom:4px;">
+          <strong>Onde queremos chegar:</strong> 7,5 em 2025
+        </p>
+        <canvas id="saebChart" style="height:340px;margin-top:12px"></canvas>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // registra o plugin de datalabels
+    Chart.register(ChartDataLabels);
+
+    // Tema (escurecer / clarear)
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+
+    function updateThemeIcon(){
+      if(document.body.classList.contains('light')){
+        themeIcon.className = 'fa-solid fa-sun';
+      }else{
+        themeIcon.className = 'fa-solid fa-moon';
+      }
+    }
+
+    themeBtn.onclick = ()=>{
+      document.body.classList.toggle('light');
+      updateThemeIcon();
+    };
+
+    updateThemeIcon();
+
+    // Painéis
+    function openPanel(k){
+      ['projects','info','gallery','staff','management','saeb','perfil','missao','visao','meta'].forEach(id=>{
+        const el = document.getElementById('panel-'+id);
+        if(el) el.style.display='none';
+      });
+      document.getElementById('panel-'+k).style.display='block';
+      document.getElementById('panelOverlay').style.display='flex';
+    }
+    function closePanel(){
+      document.getElementById('panelOverlay').style.display='none';
+    }
+
+    document.getElementById('openSaebPanelBtn').onclick=()=>openPanel('saeb');
+
+    // SAEB Charts (ANOS E NOTAS GERAIS)
+    const saebData = [
+      { ano: 2015, nota: 5.0 },
+      { ano: 2017, nota: 6.7 },
+      { ano: 2019, nota: 6.7 },
+      { ano: 2021, nota: 5.7 },
+      { ano: 2023, nota: 5.9 }
+    ];
+
+    // Gráfico pequeno (balão SAEB)
+    new Chart(document.getElementById('saebChartInlineSmall'),{
+      type:'line',
+      data:{
+        labels:saebData.map(d=>d.ano),
+        datasets:[
+          {
+            label:'Nota Geral',
+            data:saebData.map(d=>d.nota),
+            borderColor:'#06b6d4',
+            pointRadius:6,
+            tension:0.3
+          }
+        ]
+      },
+      options:{
+        scales:{y:{min:0,max:10}},
+        plugins:{
+          legend:{display:false},
+          datalabels:{
+            anchor:'end',
+            align:'top',
+            formatter:(value)=>value.toFixed(1),
+            font:{weight:'bold',size:16},
+            color:'#ffffff'
+          }
+        }
+      }
+    });
+
+    // Gráfico grande (painel SAEB)
+    new Chart(document.getElementById('saebChart'),{
+      type:'line',
+      data:{
+        labels:saebData.map(d=>d.ano),
+        datasets:[
+          {
+            label:'Nota Geral',
+            data:saebData.map(d=>d.nota),
+            borderColor:'#06b6d4',
+            pointRadius:6,
+            tension:0.3
+          }
+        ]
+      },
+      options:{
+        scales:{y:{min:0,max:10}},
+        plugins:{
+          legend:{display:false},
+          datalabels:{
+            anchor:'end',
+            align:'top',
+            formatter:(value)=>value.toFixed(1),
+            font:{weight:'bold',size:16},
+            color:'#ffffff'
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
